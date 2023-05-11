@@ -36,6 +36,19 @@ address{
   padding-top: 1em;
   border-top: thin dotted;
 }
+.main{
+  background-color:white;
+  overflow: hidden    ;
+}
+.contenido {
+  align-items: center;
+  margin: 0% 20%;
+}
+.card{
+  margin-bottom: 3%;
+  padding: 20px;
+  background-color: #cecccc;
+}
 
 
          
