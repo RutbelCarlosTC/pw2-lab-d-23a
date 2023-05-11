@@ -25,11 +25,11 @@ ul.navbar li {
 ul.navbar a { 
   text-decoration: none 
 }   
-a:link {
+.navbar a:link {
   color: blue 
 }   
-a:visited {
-  color: purple 
+.navbar a:visited {
+  color: red 
 }   
 address{
   margin-top:1em;
@@ -48,6 +48,15 @@ address{
   margin-bottom: 3%;
   padding: 20px;
   background-color: #cecccc;
+}
+.header{
+  color:white;
+  padding :3px;
+  text-align: center;
+  background:#373549;
+}
+.footer{
+  text-align: center;
 }
 
 
