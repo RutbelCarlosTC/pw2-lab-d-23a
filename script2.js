@@ -19,3 +19,15 @@ function addToStack(item) {
     stack.push(item);
     updateStackDisplay();
 }
+// Función para actualizar la visualización de la pila
+function updateStackDisplay() {
+    const stackElement = document.getElementById("stack");
+    stackElement.innerHTML = ""; // Limpiar la visualización actual
+  
+    // Crear elementos de lista para cada elemento de la pila
+    stack.forEach((item) => {
+      const listItem = document.createElement("li");
+      listItem.textContent = item;
+      stackElement.appendChild(listItem);
+    });
+}
