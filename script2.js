@@ -22,3 +22,20 @@ function saveToMemory(memoryIndex) {
     }
     screen.textContent = '';
 }
+function moveDownStack() {
+    if (stack.length > 0) {
+      const currentValue = screen.textContent;
+      stack.push(currentValue);
+      const valueFromStack = stack.shift();
+      screen.textContent = valueFromStack;
+    }
+}
+
+function moveUpStack() {
+    if (stack.length > 0) {
+      const currentValue = screen.textContent;
+      stack.unshift(currentValue);
+      const valueFromStack = stack.pop();
+      screen.textContent = valueFromStack;
+    }
+}
