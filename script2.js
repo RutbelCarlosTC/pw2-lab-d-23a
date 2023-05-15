@@ -14,3 +14,8 @@ function handleKeyDown(event) {
       }
     }
 }
+// Función para agregar un elemento a la pila
+function addToStack(item) {
+    stack.push(item);
+    updateStackDisplay();
+}
