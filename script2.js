@@ -13,3 +13,12 @@ function handleCalculate() {
     stack.push(result);
     screen.textContent = '';
 }
+function saveToMemory(memoryIndex) {
+    const result = screen.textContent;
+    if (memoryIndex === 1) {
+      memory.m1 = result;
+    } else if (memoryIndex === 2) {
+      memory.m2 = result;
+    }
+    screen.textContent = '';
+}
