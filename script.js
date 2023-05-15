@@ -13,3 +13,9 @@ function generarTeclado() {
         document.getElementById('teclado').appendChild(boton);
     });
 }
+// Función para generar una clave a partir de los números presionados
+function generarClave(numero) {
+    var clave = document.getElementById('clave').value;
+    clave += numero;
+    document.getElementById('clave').value = clave;
+}
