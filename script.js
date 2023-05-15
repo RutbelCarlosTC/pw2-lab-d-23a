@@ -19,3 +19,5 @@ function generarClave(numero) {
     clave += numero;
     document.getElementById('clave').value = clave;
 }
+// Llamar a la función para generar el teclado al cargar la página
+window.addEventListener('load', generarTeclado);
