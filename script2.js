@@ -4,3 +4,12 @@ const memory = {
     m2: null
 };
 let stack = [];
+function handleButton(value) {
+    screen.textContent += value;
+}
+
+function handleCalculate() {
+    const result = eval(screen.textContent);
+    stack.push(result);
+    screen.textContent = '';
+}
