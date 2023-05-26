@@ -21,7 +21,27 @@ app.get('/list', (req, res) => {
   const html = generateEventListHTML(eventTree);
   res.send(html);
 });
-
+// Ruta para crear un evento
+app.post('/event', (req, res) => {
+    const { date, time, title, description } = req.body;
+    const eventPath = path.join(__dirname, 'events', date);
+    const eventFile = path.join(eventPath, `${time}.txt`);
+  
+    // Verificar si el archivo del evento ya existe
+    if (fs.existsSync(eventFile)) {
+      res.send('El evento ya existe.');
+    } else {
+      // Crear el directorio de la fecha si no existe
+      if (!fs.existsSync(eventPath)) {
+        fs.mkdirSync(eventPath);
+      }
+  
+      // Guardar el evento en el archivo
+      fs.writeFileSync(eventFile, `${title}\n${description}`);
+  
+      res.redirect('/list');
+    }
+  });
 
 // Obtener la estructura de eventos
 function getEventTree() {
