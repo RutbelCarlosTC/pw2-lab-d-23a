@@ -42,7 +42,26 @@ app.post('/event', (req, res) => {
       res.redirect('/list');
     }
   });
-
+// Ruta para ver detalles de un evento
+app.get('/event/:date/:time', (req, res) => {
+    const { date, time } = req.params;
+    const eventFile = path.join(__dirname, 'events', date, `${time}.txt`);
+  
+    // Leer el contenido del archivo
+    const content = fs.readFileSync(eventFile, 'utf8');
+  
+    const html = `
+      <h1>Detalles del evento</h1>
+      <h2>Fecha: ${date}</h2>
+      <h2>Hora: ${time}</h2>
+      <h2>Contenido:</h2>
+      <p>${content}</p>
+      <a href="/list">Volver</a>
+    `;
+  
+    res.send(html);
+  });
+  
 // Obtener la estructura de eventos
 function getEventTree() {
     const eventsPath = path.join(__dirname, 'events');
