@@ -94,6 +94,25 @@ app.get('/event/:date/:time/delete', (req, res) => {
   
     res.send(html);
   });
+// Ruta para actualizar un evento (procesamiento del formulario de edición)
+app.post('/event/:date/:time/update', (req, res) => {
+    const { date, time } = req.params;
+    const eventFile = path.join(__dirname, 'events', date, `${time}.txt`);
+    const { title, description } = req.body;
+  
+    // Leer el contenido actual del archivo
+    const content = fs.readFileSync(eventFile, 'utf8');
+  
+    // Actualizar el contenido con los nuevos valores
+    const updatedContent = `${title}\n${description}`;
+  
+    // Escribir el contenido actualizado en el archivo
+    fs.writeFileSync(eventFile, updatedContent);
+  
+    res.redirect(`/event/${date}/${time}`);
+  });
+
+  
 
 // Obtener la estructura de eventos
 function getEventTree() {
