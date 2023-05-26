@@ -61,7 +61,40 @@ app.get('/event/:date/:time', (req, res) => {
   
     res.send(html);
   });
+// Ruta para eliminar un evento
+app.get('/event/:date/:time/delete', (req, res) => {
+    const { date, time } = req.params;
+    const eventFile = path.join(__dirname, 'events', date, `${time}.txt`);
   
+    // Eliminar el archivo del evento
+    fs.unlinkSync(eventFile);
+  
+    res.redirect('/list');
+  });
+  
+  // Ruta para editar un evento (formulario de edición)
+  app.get('/event/:date/:time/edit', (req, res) => {
+    const { date, time } = req.params;
+    const eventFile = path.join(__dirname, 'events', date, `${time}.txt`);
+  
+    // Leer el contenido del archivo
+    const content = fs.readFileSync(eventFile, 'utf8');
+  
+    const html = `
+      <h1>Editar evento</h1>
+      <form action="/event/${date}/${time}/update" method="POST">
+        <label for="title">Título:</label>
+        <input type="text" id="title" name="title" value="${getTitleFromContent(content)}" required><br>
+        <label for="description">Descripción:</label>
+        <textarea id="description" name="description" required>${getDescriptionFromContent(content)}</textarea><br>
+        <button type="submit">Guardar cambios</button>
+      </form>
+      <a href="/list">Cancelar</a>
+    `;
+  
+    res.send(html);
+  });
+
 // Obtener la estructura de eventos
 function getEventTree() {
     const eventsPath = path.join(__dirname, 'events');
