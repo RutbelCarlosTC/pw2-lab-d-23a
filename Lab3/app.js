@@ -48,17 +48,16 @@ app.get('/event/:date/:time', (req, res) => {
   
     // Leer el contenido del archivo
     const content = fs.readFileSync(eventFile, 'utf8');
+    let title = getTitleFromContent(content);
+    let description = getDescriptionFromContent(content);
   
-    const html = `
-      <h1>Detalles del evento</h1>
-      <h2>Fecha: ${date}</h2>
-      <h2>Hora: ${time}</h2>
-      <h2>Contenido:</h2>
-      <p>${content}</p>
-      <a href="/list">Volver</a>
-    `;
-  
-    res.send(html);
+    const evento ={
+      fecha: date,
+      hora: time,
+      titulo: title,
+      descripcion: description
+    };
+    res.json(evento);
   });
 // Ruta para eliminar un evento
 app.get('/event/:date/:time/delete', (req, res) => {
