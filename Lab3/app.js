@@ -132,20 +132,20 @@ function getEventTree() {
   return events;
 }
   
-  // Obtener el título del contenido de un evento
-  function getTitleFromContent(content) {
-    const lines = content.split('\n');
-    return lines[0];
-  }
-  
-  // Obtener la descripción del contenido de un evento
-  function getDescriptionFromContent(content) {
-    const lines = content.split('\n');
-    return lines.slice(1).join('\n');
-  }
-  
-  // Iniciar el servidor
-  app.listen(3000, () => {
-    console.log(`Servidor iniciado en http://localhost:3000`);
-  });
+// Obtener el título del contenido de un evento
+function getTitleFromContent(content) {
+  const lines = content.split('\n');
+  return lines[0];
+}
+
+// Obtener la descripción del contenido de un evento
+function getDescriptionFromContent(content) {
+  const lines = content.split('\n');
+  return lines.slice(1).join('\n');
+}
+
+// Iniciar el servidor
+app.listen(3000, () => {
+  console.log(`Servidor iniciado en http://localhost:3000`);
+});
   
