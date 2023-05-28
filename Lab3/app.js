@@ -59,56 +59,31 @@ app.get('/event/:date/:time', (req, res) => {
     };
     res.json(evento);
 });
+
+// Ruta para actualizar un evento (procesamiento del formulario de edición)
+app.put('/event/:date/:time/update', (req, res) => {
+  const { date, time } = req.params;
+  const eventFile = path.join(__dirname, 'events', date, `${time}.txt`);
+  const { title, description } = req.body;
+
+  // Actualizar el contenido con los nuevos valores
+  const updatedContent = `${title}\n${description}`;
+  // Escribir el contenido actualizado en el archivo
+  fs.writeFileSync(eventFile, updatedContent);
+  res.end();
+});
+
 // Ruta para eliminar un evento
 app.get('/event/:date/:time/delete', (req, res) => {
-    const { date, time } = req.params;
-    const eventFile = path.join(__dirname, 'events', date, `${time}.txt`);
+  const { date, time } = req.params;
+  const eventFile = path.join(__dirname, 'events', date, `${time}.txt`);
+
+  // Eliminar el archivo del evento
+  fs.unlinkSync(eventFile);
+
+  res.redirect('/list');
+});
   
-    // Eliminar el archivo del evento
-    fs.unlinkSync(eventFile);
-  
-    res.redirect('/list');
-  });
-  
-  // Ruta para editar un evento (formulario de edición)
-  app.get('/event/:date/:time/edit', (req, res) => {
-    const { date, time } = req.params;
-    const eventFile = path.join(__dirname, 'events', date, `${time}.txt`);
-  
-    // Leer el contenido del archivo
-    const content = fs.readFileSync(eventFile, 'utf8');
-  
-    const html = `
-      <h1>Editar evento</h1>
-      <form action="/event/${date}/${time}/update" method="POST">
-        <label for="title">Título:</label>
-        <input type="text" id="title" name="title" value="${getTitleFromContent(content)}" required><br>
-        <label for="description">Descripción:</label>
-        <textarea id="description" name="description" required>${getDescriptionFromContent(content)}</textarea><br>
-        <button type="submit">Guardar cambios</button>
-      </form>
-      <a href="/list">Cancelar</a>
-    `;
-  
-    res.send(html);
-  });
-// Ruta para actualizar un evento (procesamiento del formulario de edición)
-app.post('/event/:date/:time/update', (req, res) => {
-    const { date, time } = req.params;
-    const eventFile = path.join(__dirname, 'events', date, `${time}.txt`);
-    const { title, description } = req.body;
-  
-    // Leer el contenido actual del archivo
-    const content = fs.readFileSync(eventFile, 'utf8');
-  
-    // Actualizar el contenido con los nuevos valores
-    const updatedContent = `${title}\n${description}`;
-  
-    // Escribir el contenido actualizado en el archivo
-    fs.writeFileSync(eventFile, updatedContent);
-  
-    res.redirect(`/event/${date}/${time}`);
-  });
 
   
 
