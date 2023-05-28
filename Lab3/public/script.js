@@ -75,3 +75,57 @@ function verEvento(date,time){
     console.error('Error al obtener detalles de evento: ',error);
   });
 }
+function editarEvento(date,time){
+  console.log("llego a editar evento");
+  fetch(`http://localhost:3000/event/${date}/${time}`)
+  .then(response => response.json())
+  .then(data => {
+    const html = `
+      <h1>Editar evento</h1>
+      <form id="formEdicion">
+        <label for="title">Título:</label>
+        <input type="text" id="title" name="title" value="${data.titulo}" required><br>
+        <label for="description">Descripción:</label>
+        <textarea id="description" name="description" required>${data.descripcion}</textarea><br>
+        <button type="button" onclick="actualizarEvento('${date}','${time}')">Guardar cambios</button>
+      </form>
+      <a href="#" onclick="mostrarLista()">Cancelar</a>
+    `;
+    const mainDiv = document.getElementById('main');
+    mainDiv.innerHTML = html;
+  })
+  .catch(error =>{
+    console.error('Error al obtener detalles de evento: ',error);
+  });
+}
+function actualizarEvento(date,time){
+  let title = document.getElementById("title").value;
+  let description = document.getElementById("description").value;
+  const data = {
+    title:title,
+    description:description
+  };
+  console.log("nueva data para actualizar",data);
+
+  const request = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+  };
+  const url = `http://localhost:3000/event/${date}/${time}/update`;
+
+  fetch(url,request)
+  .then(function(response) {
+    if(response.ok){
+      verEvento(date,time);
+    }else{
+      console.log("error al enviar datos de actualizar");
+    }
+   
+  })
+  .catch(error =>{
+    console.log('Error al actulizar archivo:',error);
+  });
+}
