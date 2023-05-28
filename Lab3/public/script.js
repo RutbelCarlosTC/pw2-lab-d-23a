@@ -55,3 +55,23 @@ function formCrearEvento(){
   const mainDiv = document.getElementById('main');
   mainDiv.innerHTML = html;
 }
+function verEvento(date,time){
+  fetch(`http://localhost:3000/event/${date}/${time}`)
+  .then(response => response.json())
+  .then(data => {
+    let html = `
+      <h1>Detalles del evento</h1>
+      <h2>Fecha: ${data.fecha}</h2>
+      <h2>Hora: ${data.hora}</h2>
+      <h2>Titulo: ${data.titulo}</h2>
+      <h2>Descripcion:</h2>
+      <p>${data.descripcion}</p>
+      <a href="#" onclick="mostrarLista()">Volver</a>
+    `;
+    const mainDiv = document.getElementById('main');
+    mainDiv.innerHTML = html;
+  })
+  .catch(error =>{
+    console.error('Error al obtener detalles de evento: ',error);
+  });
+}
