@@ -6,6 +6,7 @@ const path = require('path');
 const app = express();
 
 // Configuración de la plantilla de vista
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('public'));
 
@@ -14,13 +15,13 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-//lista
+//lista de los eventos creados
 app.get('/list', (req, res) => {
-  // Lee los eventos guardados y genera el contenido HTML
+  // Lee los eventos guardados y devuelve un JSON
   const eventTree = getEventTree();
-  const html = generateEventListHTML(eventTree);
-  res.send(html);
+  res.json(eventTree);
 });
+
 // Ruta para crear un evento
 app.post('/event', (req, res) => {
     const { date, time, title, description } = req.body;
@@ -116,86 +117,51 @@ app.post('/event/:date/:time/update', (req, res) => {
 
 // Obtener la estructura de eventos
 function getEventTree() {
-    const eventsPath = path.join(__dirname, 'events');
-    const dates = fs.readdirSync(eventsPath);
-    const eventTree = [];
-  
-    for (const date of dates) {
-      const datePath = path.join(eventsPath, date);
-      const files = fs.readdirSync(datePath);
-      const eventFiles = [];
-  
-      for (const file of files) {
-        const filePath = path.join(datePath, file);
-        const stats = fs.statSync(filePath);
-        
-        const content = fs.readFileSync(filePath, 'utf8');
-        const titleEvent = getTitleFromContent(content);
-        
-        // Agregar solo archivos de texto al árbol de eventos
-        if (stats.isFile() && path.extname(file) === '.txt') {
-          const time = path.basename(file, '.txt');
-          eventFiles.push({
-            time,
-            file: `${date}/${file}`,
-            title: titleEvent,
-          });
+  const folderPath = path.join(__dirname, 'events');
+
+  const events = {};
+
+  // Lee los nombres de las carpetas dentro de la carpeta "events"
+  const folderNames = fs.readdirSync(folderPath);
+
+  // Recorre cada carpeta por su nombre
+  folderNames.forEach(folderName => {
+    const folderPath = path.join(__dirname, 'events', folderName);
+
+    // Verifica si es una carpeta
+    if (fs.statSync(folderPath).isDirectory()) {
+      const files = fs.readdirSync(folderPath);
+      const eventFiles = files.filter(file => file.endsWith('.txt'));
+
+      // Recorre los archivos de eventos de la carpeta actual
+      eventFiles.forEach(eventFile => {
+        const filePath = path.join(folderPath, eventFile);
+        const fileContent = fs.readFileSync(filePath, 'utf8');
+
+        // Extrae el título y la descripción del archivo de texto
+        let title = getTitleFromContent(fileContent);
+        let description = getDescriptionFromContent(fileContent);
+        let time = path.parse(eventFile).name;
+
+        // Construye un objeto de evento
+        const event = {
+          date: folderName,
+          time: time,
+          title: title,
+          description: description
+        };
+
+        // Agrega el evento al objeto de eventos, usando el nombre de la carpeta como clave
+        if (!events[folderName]) {
+          events[folderName] = [];
         }
-      }
-  
-      if (eventFiles.length > 0) {
-        eventTree.push({
-          date,
-          files: eventFiles,
-        });
-      }
-    }
-  
-    return eventTree;
-  }
-  
-  // Generar el HTML para la lista de eventos
-  function generateEventListHTML(eventTree) {
-    let html = '<h1>Agenda Personal</h1>';
-  
-    html += '<h2>Ver eventos</h2>';
-    html += '<ul>';
-  
-    eventTree.forEach(date => {
-      html += `<li>${date.date}<ul>`;
-  
-      date.files.forEach(file => {
-        html += `
-          <li>
-            <a href="/event/${date.date}/${file.time}">${file.time}->[${file.title}]</a>
-            <a href="/event/${date.date}/${file.time}/delete" onclick="return confirm('¿Estás seguro de eliminar este evento?')">Eliminar</a>
-            <a href="/event/${date.date}/${file.time}/edit">Editar</a>
-          </li>
-        `;
+        events[folderName].push(event);
       });
-  
-      html += '</ul></li>';
-    });
-  
-    html += '</ul>';
-  
-    html += `
-      <h2>Crear evento</h2>
-      <form action="/event" method="POST">
-        <label for="date">Fecha:</label>
-        <input type="date" id="date" name="date" required><br>
-        <label for="time">Hora:</label>
-        <input type="time" id="time" name="time" required><br>
-        <label for="title">Título:</label>
-        <input type="text" id="title" name="title" required><br>
-        <label for="description">Descripción:</label>
-        <textarea id="description" name="description" required></textarea><br>
-        <button type="submit">Crear</button>
-      </form>
-    `;
-  
-    return html;
-  }
+    }
+  });
+
+  return events;
+}
   
   // Obtener el título del contenido de un evento
   function getTitleFromContent(content) {
