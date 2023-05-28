@@ -74,19 +74,16 @@ app.put('/event/:date/:time/update', (req, res) => {
 });
 
 // Ruta para eliminar un evento
-app.get('/event/:date/:time/delete', (req, res) => {
+app.delete('/event/:date/:time/delete', (req, res) => {
   const { date, time } = req.params;
   const eventFile = path.join(__dirname, 'events', date, `${time}.txt`);
 
   // Eliminar el archivo del evento
   fs.unlinkSync(eventFile);
 
-  res.redirect('/list');
+  res.end();
 });
   
-
-  
-
 // Obtener la estructura de eventos
 function getEventTree() {
   const folderPath = path.join(__dirname, 'events');
