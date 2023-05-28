@@ -129,3 +129,21 @@ function actualizarEvento(date,time){
     console.log('Error al actulizar archivo:',error);
   });
 }
+function borrarEvento(date,time){
+  if (confirm('¿Estás seguro de eliminar este evento?')) {
+    url=`http://localhost:3000/event/${date}/${time}/delete`;
+    const request = {
+      method: 'DELETE',
+    };
+    fetch(url,request)
+    .then(() => {
+      mostrarLista();
+    })
+    .catch(error =>{
+      console.error('Error al borrar evento: ',error);
+    });
+  } else {
+    console.log('Eliminación cancelada');
+  }
+  return false;
+}
