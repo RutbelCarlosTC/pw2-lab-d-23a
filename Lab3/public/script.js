@@ -37,3 +37,21 @@ function mostrarLista() {
     console.error('Error al obtener el HTML:', error);
   });
 }
+function formCrearEvento(){
+  let html='<h2>Crear evento</h2>';
+  html += `
+      <form>
+        <label for="date">Fecha:</label>
+        <input type="date" id="date" name="date" required><br>
+        <label for="time">Hora:</label>
+        <input type="time" id="time" name="time" required><br>
+        <label for="title">Título:</label>
+        <input type="text" id="title" name="title" required><br>
+        <label for="description">Descripción:</label>
+        <textarea id="description" name="description" required></textarea><br>
+        <button type="button" onclick="crearEvento()">Crear</button>
+      </form>
+  `;
+  const mainDiv = document.getElementById('main');
+  mainDiv.innerHTML = html;
+}
