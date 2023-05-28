@@ -169,6 +169,7 @@ function actualizarEvento(date,time){
 }
 function borrarEvento(date,time){
   if (confirm('¿Estás seguro de eliminar este evento?')) {
+    
     url=`http://localhost:3000/event/${date}/${time}/delete`;
     const request = {
       method: 'DELETE',
