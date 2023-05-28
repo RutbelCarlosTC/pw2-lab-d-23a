@@ -58,7 +58,7 @@ app.get('/event/:date/:time', (req, res) => {
       descripcion: description
     };
     res.json(evento);
-  });
+});
 // Ruta para eliminar un evento
 app.get('/event/:date/:time/delete', (req, res) => {
     const { date, time } = req.params;
