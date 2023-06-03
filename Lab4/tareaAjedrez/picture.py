@@ -97,6 +97,9 @@ class Picture:
     return Picture(img)
 
   def verticalRepeat(self, n):
+    img = []
+    for i in range(0,n):
+        img += self.img
     return Picture(None)
 
   #Extra: Sólo para realmente viciosos 
