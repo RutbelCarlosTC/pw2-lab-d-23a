@@ -56,7 +56,18 @@ class Picture:
 
   def up(self, p):
     """Devuelve una nueva figura poniendo la figura actual sofre otra figura p"""
-    return Picture(None)
+    img = []
+    aux = ""
+    for i in range(0, len(self.img)):
+        for j in range(0,len(self.img[i])):
+            if (self.img[i][j] == " "):
+                aux += p.img[i][j]
+            else:
+                aux += self.img[i][j]
+        img.append(aux)
+        aux = ""
+    
+    return Picture(img)
 
   def under(self, p):
     """ Devuelve una nueva figura poniendo la figura p sobre la
