@@ -13,8 +13,15 @@ class Picture:
 
   def verticalMirror(self):
     """ Devuelve el espejo vertical de la imagen """
+    vertical = []
+    cadAux = ""
+    for i in range(0, len(self.img)):
+        for j in range(0, len(self.img[i])):
+            cadAux = self.img[i][j] + cadAux; 
+        vertical.append(cadAux)
+        cadAux = ""
     
-    return Picture(None)
+    return Picture(vertical)
 
   def horizontalMirror(self):
     """ Devuelve el espejo horizontal de la imagen """
