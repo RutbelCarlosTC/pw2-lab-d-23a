@@ -15,3 +15,10 @@ blancas  = Picture(peones.img + piezas.img)
 negras = Picture(piezas.img + peones.img).negative()
 
 filaCuadrosAB = Picture(filaCuadrosA.img + filaCuadrosB.img)
+
+grupoBlancas = blancas.up(filaCuadrosAB)
+grupoNegras = (negras.up(filaCuadrosAB))
+grupoCuadros = filaCuadrosAB.verticalRepeat(2)
+
+tablero = Picture(grupoNegras.img + grupoCuadros.img + grupoBlancas.img)
+draw(tablero)
