@@ -26,3 +26,9 @@ urlpatterns = [
 urlpatterns += [
     path('catalog/', include('catalog.urls')),
 ]
+
+#Agregar URL de autenticación del sitio de Django 
+# (para iniciar sesión, cerrar sesión, administración de contraseñas)
+urlpatterns += [
+    path('accounts/', include('django.contrib.auth.urls')),
+]
