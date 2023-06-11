@@ -17,6 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+#Use include() para agregar URL desde la aplicación de catálogo y el sistema de autenticación
+from django.urls import include
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+]
+urlpatterns += [
+    path('catalog/', include('catalog.urls')),
 ]
