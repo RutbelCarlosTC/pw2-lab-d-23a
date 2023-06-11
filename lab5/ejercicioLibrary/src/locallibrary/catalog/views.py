@@ -61,3 +61,16 @@ class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
             .filter(status__exact='o')
             .order_by('due_back')
         )
+    
+from django.contrib.auth.mixins import PermissionRequiredMixin
+
+class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
+    """Vista genérica basada en clases que enumera todos los libros en préstamo.
+      Solo visible para usuarios con permiso can_mark_returned."""
+    model = BookInstance
+    permission_required = 'catalog.can_mark_returned'
+    template_name = 'catalog/bookinstance_list_borrowed_all.html'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return BookInstance.objects.filter(status__exact='o').order_by('due_back')
