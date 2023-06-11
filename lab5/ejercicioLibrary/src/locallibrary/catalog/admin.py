@@ -16,7 +16,6 @@ class BooksInline(admin.TabularInline):
     """Define el formato de inserción de libros en línea (utilizado en AuthorAdmin)"""
     model = Book
 
-
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
     """Objeto de administración para modelos Author.
@@ -30,3 +29,17 @@ class AuthorAdmin(admin.ModelAdmin):
                     'first_name', 'date_of_birth', 'date_of_death')
     fields = ['first_name', 'last_name', ('date_of_birth', 'date_of_death')]
     inlines = [BooksInline]
+
+
+class BooksInstanceInline(admin.TabularInline):
+    """Defines format of inline book instance insertion (used in BookAdmin)"""
+    model = BookInstance
+    
+class BookAdmin(admin.ModelAdmin):
+    """Administration object for Book models.
+    Defines:
+     - fields to be displayed in list view (list_display)
+     - adds inline addition of book instances in book view (inlines)
+    """
+    list_display = ('title', 'author', 'display_genre')
+    inlines = [BooksInstanceInline]
